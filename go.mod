@@ -11,4 +11,5 @@ require (
 	github.com/stretchr/testify v1.3.0 // indirect
 	github.com/valyala/fasttemplate v1.0.1 // indirect
 	golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c // indirect
+	google.golang.org/genproto v0.0.0-20190401181712-f467c93bbac2
 )

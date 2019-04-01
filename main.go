@@ -18,12 +18,22 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.GET("/", runHandler)
+	e.POST("/", runHandler)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
 
+type codeBody struct {
+	Code string `form:"code"`
+}
+
 func runHandler(c echo.Context) error {
+	code := new(codeBody)
+	if err := c.Bind(code); err != nil {
+		return err
+	}
+	log.Println("code below")
+	log.Println(code.Code)
 	wd, err := os.Getwd()
 	if err != nil {
 		return err
@@ -58,12 +68,12 @@ func runHandler(c echo.Context) error {
 	mainScriptLoc := filepath.Join(tmpDir, "main.go")
 	if err := ioutil.WriteFile(
 		mainScriptLoc,
-		[]byte(testFileGo),
+		[]byte(code.Code),
 		0777,
 	); err != nil {
 		return err
 	}
-	log.Println("wrote", mainScriptLoc)
+	log.Printf("wrote %s (%d bytes)", mainScriptLoc, len(code.Code))
 
 	cmd := exec.Command(
 		"go",
