@@ -55,7 +55,7 @@ func runHandler(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	// defer os.RemoveAll(tmpDir) // TODO: check errr
+	defer os.RemoveAll(tmpDir) // TODO: check errr
 
 	// write supporting files
 	nodeScriptLoc := filepath.Join(tmpDir, "node_exec_wasm.sh")
