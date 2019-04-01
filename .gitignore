@@ -12,3 +12,4 @@
 *.out
 wasmrun-*
 cli/cli
+wasmteach
