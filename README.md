@@ -1,4 +1,4 @@
-# Go Code Runner
+# Execute Go On the Server, With WebAssembly
 
 This project is a server and a small CLI that lets you write code locally, upload it, execute it on the server, and return the result to the CLI.
 
