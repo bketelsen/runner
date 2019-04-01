@@ -13,3 +13,6 @@
 wasmrun-*
 cli/cli
 wasmteach
+runcli
+cli
+runner
