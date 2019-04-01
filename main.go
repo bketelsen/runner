@@ -88,6 +88,8 @@ func runHandler(c echo.Context) error {
 	}
 	log.Printf("wrote %s (%d bytes)", mainScriptLoc, len(code))
 
+	// TODO: use CommandContext (https://godoc.org/os/exec#CommandContext) here
+	// to kill code that spins forever
 	cmd := exec.Command(
 		"go",
 		"run",
