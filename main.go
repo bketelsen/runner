@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -24,16 +25,28 @@ func main() {
 }
 
 type codeBody struct {
-	Code string `form:"code"`
+	Encoded string `json:"code"`
+}
+
+func (c *codeBody) Decode() (string, error) {
+	b, err := base64.StdEncoding.DecodeString(c.Encoded)
+	if err != nil {
+		return "", err
+	}
+	return string(b), nil
 }
 
 func runHandler(c echo.Context) error {
-	code := new(codeBody)
-	if err := c.Bind(code); err != nil {
+	encoded := new(codeBody)
+	if err := c.Bind(encoded); err != nil {
+		return err
+	}
+	code, err := encoded.Decode()
+	if err != nil {
 		return err
 	}
 	log.Println("code below")
-	log.Println(code.Code)
+	log.Println(code)
 	wd, err := os.Getwd()
 	if err != nil {
 		return err
@@ -68,12 +81,12 @@ func runHandler(c echo.Context) error {
 	mainScriptLoc := filepath.Join(tmpDir, "main.go")
 	if err := ioutil.WriteFile(
 		mainScriptLoc,
-		[]byte(code.Code),
+		[]byte(code),
 		0777,
 	); err != nil {
 		return err
 	}
-	log.Printf("wrote %s (%d bytes)", mainScriptLoc, len(code.Code))
+	log.Printf("wrote %s (%d bytes)", mainScriptLoc, len(code))
 
 	cmd := exec.Command(
 		"go",
