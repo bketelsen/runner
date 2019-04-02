@@ -3,5 +3,7 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("It Worked!")
+	for i := 0; i < 10; i++ {
+		fmt.Println("Hello WASM On The Server!", i)
+	}
 }
